@@ -8,14 +8,126 @@
   <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
   <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
+    
+<style> 
+    body { height: 100vh; }
+#mycursor {
+    cursor:auto;
+    opacity: 1;
+    cursor: url(https://imgur.com/67MCY4F) 6 6 auto;
+}
+</style>
 
 <body>
+<script> 
+// 2014-08-18
+// 2017-08-13
+// copyright 2014 Xah Lee
+// feel free to use, but must give credit, link back to this page
+// from http://xahlee.info/js/js_raining_hearts.html
+
+{
+
+    const num_of_hearts = 20;
+    const driftX = 2; // each frame, drift left/right this much
+    const driftY = 8;
+    const update_speed = 100; // millisecond
+
+    const heartTypes=["♥","💕","💓","💔","💖","💗","💘","💝","💞","💟","💙","💚","💛","💜",
+                      "✨","❇","❈","❄","❅","❆","✿","❀","❁","✾",
+                      "★","☆","⚝","✩","✫","✬","✭","✮","✯","✰"
+                     ];
+
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+
+    const viewSpaceWidth = viewportWidth+50;
+    const viewSpaceHeight = viewportHeight+50;
+
+    const randomInt = ((xmin,xmax) => (Math.floor( Math.random() * (xmax + 1 - xmin) + xmin )));
+
+    const randomReal = ((xmin,xmax) => ( Math.random() * (xmax - xmin) + xmin ));
+
+    const randomColor = (() => ("hsla" + "(" + randomInt(0,360) + "," +
+            randomInt(70,100) + "%," +
+            randomInt(40,60) + "%," +
+            randomReal(.8,1) + ")" ) );
+
+    const restartHeart = ((el) => {
+        el.innerHTML= heartTypes[Math.floor( Math.random() * heartTypes.length )];
+        el.posX=randomInt(0, viewSpaceWidth);
+        el.posY=randomInt(0, viewSpaceHeight)-viewSpaceHeight;
+        el.size= 10 + randomInt(0,30);
+        el.rotate = randomInt(-1,1);
+        el.style.color = randomColor();
+        el.style.left= el.posX + "px";
+        el.style.top= el.posY + "px";
+        el.style.fontSize = el.size + "px";
+        el.style.transform = "rotate(" + el.rotate + "deg)";
+    });
+
+    const heart_box = document.createElement("div");
+    heart_box.setAttribute("id","heart_box");
+
+    { // create Hearts
+        const hearts = new Array(num_of_hearts);
+        for (let i=0; i < hearts.length; i++) {
+            const el = document.createElement("div");
+            restartHeart(el);
+            el.style.position="fixed";
+            el.style.zIndex= (i+100) .toString ();
+            heart_box.appendChild(el);
+        } } ;
+
+    document.body.appendChild(heart_box);
+
+    const heartNodes = document.getElementById("heart_box").childNodes;
+
+    const update_positions = (() => {
+
+        for (let i = 0; i < heartNodes.length; i++) {
+            const thisHeart = heartNodes[i];
+
+            thisHeart.posX += 
+            (() => {
+                const rnd = Math.random();
+                if ( rnd < 0.3333 ) {
+                    return 0;
+                } else if ( rnd < 0.6666) {
+                    return driftX;}
+                else {
+                    return - driftX;
+                }
+            }) ();
+
+            thisHeart.posY = thisHeart.posY + ( (thisHeart.size/20) * (driftY) );
+
+            if ( thisHeart.posY > viewSpaceHeight ) {
+                restartHeart(thisHeart);
+            } else {
+                thisHeart.posY = thisHeart.posY % viewSpaceHeight; };
+
+            if ( thisHeart.rotate !== 0 ) {
+                thisHeart.rotate = thisHeart.rotate + randomInt(-30,30);
+                thisHeart.style.transform = "rotate(" + thisHeart.rotate + "deg)";
+            };
+
+            thisHeart.style.left = thisHeart.posX + "px";
+            thisHeart.style.top= thisHeart.posY + "px";
+        }
+    });
+
+    setInterval( update_positions , update_speed);
+}
+;
+
+</script>
   <div id="main">
     <div id="header">
       <div id="logo">
         <div id="logo_text">
           <!-- class="logo_colour", allows you to change the colour of the text -->
-          <h1><a href="index.html">Chelsea<span class="logo_colour">Dwan</span></a></h1>
+          <h1><a href="index.html">Chelsea<span class="logo_colour">Dwan be sad, be happy!</span></a></h1>
           <h2>A fan site for my beloved best friend Chelsea Dwan <3</h2>
         </div>
       </div>
@@ -40,7 +152,7 @@
             <!-- insert your sidebar items here -->
             <h3>Latest News</h3>
             <h4>Steven Pham is making a dank as website for Chelsea Dwan</h4>
-            <h5>Recent Update was created on the April 3rd 2018 (1:44 AM)</h5>
+            <h5>Recent Update was created on the April 3rd 2018</h5>
             <p>In this update I made the website into an actual looking website. I updated the message for Chelsea Dwan. NOTE: I felt happy making this website so dont worry.</p>
           </div>
           <div class="sidebar_base"></div>
@@ -76,8 +188,8 @@
         <!-- insert the page content here -->
         <h1>Welcome to Chelsea's fan website! Best human ever! :D </h1>
         <h2> A message to you: </h2>
-        <p> Hey, if you're reading this Chelsea... Please have the best life ever! I love you very much and I wish you luck! Thank you so much for the experience you gave. Thank you for dealing with me. Thank you for accepting my physical and personality flaws. I'm not sure if you'll ever read this but i'm updating the site for you anways. I really love you smile and i wish i could travel back in time and told you i loved you. Please dont feel guilty for making your self happy; it's paramount for you to be happy and content with life so do whatever you want with no regrets. Life will always be hard and there will always be obstacles that will stop you from being happy. You gotta fight it and hang on. Remind yourself that you have accepting friends that will help you and provide you emotional support. You're probably miss me if you're reading this. Please be strong and remind yourself that YOU CAN DO IT!!! :D </p>
-        <p>One of your favourite quotes from me: "I don't want two minute noodles! I want three noodles!" xD I probs got the quote wrong so sorry. You've given me such a great life so don't feel bad. I wish i could've done more with you ya'know. I want to experience everything with you! Makes me sad that I wont be able to fly to another country with you liked we dreamed together back in the days. I owe you so much and one day I will repay you. You're the greatest!</p>
+        <p> Hey, if you're reading this Chelsea... Please have the best life ever! I love you very much and I wish you luck with eveyrthing! Thank you so much for the life changing experience you gave me. Thank you for dealing with me. Thank you for loving my physical and personality flaws. I'm not sure if you'll ever read this but i'm updating the site for you anways because I love you. I wish i could travel back in time and told you i loved you. I know this page won't change your mind but i just want to show you how much appreciation I have for you. I'll accept you in my life even if you're fat, skinny, homeless, disabled, or anything. It makes me happy when your happy. Please dont feel guilty for making your self happy; it's paramount for you to be happy and content with life so do whatever you want with no regrets. Life will always be hard and there will always be obstacles that will stop you from being happy. You gotta fight it and hang on. Remind yourself that you have accepting friends that will help you and provide you emotional support. You suffered and endured indescrible pain for three years. Remind yourself that YOU CAN GET THROUGH EVERYTHING!</p>
+        <p>One of your favourite quotes from me: "I don't want two minute noodles! I want THREE minute noodles!" xD I probs got the quote wrong so sorry. You've given me such a great life so don't feel bad. I wish i could've done more with you ya'know. I want to experience everything with you! Makes me sad that I wont be able to fly to another country with you liked we dreamed together back in the days. I owe you so much and one day I will repay you. Ple don't be guilty or feel sad about me okay? I'll be okay :). </p>
         
         <p>Also, if you're reading this really early then the website isn't finished yet. There is a lot of things i want to add just for you.</p>
 
@@ -89,6 +201,7 @@
           <li> Loves dogs </li>
           <li> JUST DUCKING COOL AND FUNNY... Even if your jokes/puns are dry xD. They still make me smile =3=</li>
         </ul>
+<div id="mycursor"></div>
       </div>
     </div>
     <div id="content_footer"></div>
